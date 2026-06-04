@@ -1,1 +1,40 @@
+> library(readxl)
+> data <-read_excel("/Users/brookeo/Downloads/Download Contaminant Results-2.xlsx")
+                                                                               
+> pfoa <- subset(data, Contaminant == "PFOA")
+> pfos <- subset(data, Contaminant == "PFOS")
+
+This part was just getting the data into R. I created a dataset on the epa.gov website linked in my raw data folder. 
+I conveniently could already sort the data on the website to have information exclusively in MA. I also set it so that the dataset only contains information
+on PFOS and PFOA. I still had to make subsets of the two within that so the process of making subsets of the two would've been the same regardless but doing
+it this way made the excel file much cleaner. 
+
+> head(pfoa)
+# A tibble: 6 × 19
+  `PWS ID`  `PWS Name`         Contaminant `Result (µg/L)` Health-Based Ref Con…¹
+  <chr>     <chr>              <chr>       <chr>           <lgl>                 
+1 MA1004000 ADAMS FIRE DISTRI… PFOA        < MRL           NA                    
+2 MA1004000 ADAMS FIRE DISTRI… PFOA        < MRL           NA                    
+3 MA1005000 AGAWAM WATER DEPA… PFOA        < MRL           NA                    
+4 MA1005000 AGAWAM WATER DEPA… PFOA        < MRL           NA                    
+5 MA1005000 AGAWAM WATER DEPA… PFOA        < MRL           NA                    
+6 MA1005000 AGAWAM WATER DEPA… PFOA        < MRL           NA  
+
+I used the head command to check the data to make sure it looked okay. This does look fine, but most points are under the maximum residue limit. They
+do not have to report results under this limit, and often can't detect things under this. Because of that, I'm going to remove the data under this limit, and
+instead only factor it in at the end when we are observing the concentrations in different areas. This amount won't be used to detect averages though, as it 
+wouldn't make sense to report them as zero when there is certainly a small quantity in the water. The areas without enough will be noted though, and used in 
+a way that seems appropriate after analyzing the rest of the data. 
+
+> pfoan <- subset(pfoa, 'Result (ug/L)' != "MRL")
+> pfosn <- subset(pfos, 'Result (ug/L)' != "MRL")
+
+This removed all MRL points. I named them the same with n to represent the subsets with reported numbers only.
+Unfortunately, in this dataset there is no observance of it's distance to water. This means I have to manually map each from the ocean, set my boundaries for 
+each and then create subsets of each county to calculate the averages of each. I put my file into co-pilot and asked it to sort the distances for me as this
+would take a very long time to do manually and I cannot use regular data analysis software to do it. I am not copying the full code as that would take up a lot
+of space, but this is a sample: 
+> close <-c("HINGHAM WATER DEPARTMENT", "HULL WATER DEPARTMENT", "MARBLEHEAD WATER DEPARTMENT", "MARSHFIELD WATER DEPARTMENT",...) 
+The parts in each bracket were sorted by copilot. 
+
 

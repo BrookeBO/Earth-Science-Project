@@ -37,4 +37,13 @@ of space, but this is a sample:
 > close <-c("HINGHAM WATER DEPARTMENT", "HULL WATER DEPARTMENT", "MARBLEHEAD WATER DEPARTMENT", "MARSHFIELD WATER DEPARTMENT",...) 
 The parts in each bracket were sorted by copilot. 
 
+> pfoaclose <- pfoa[pfoa$'PWS Name' %in% close, ]
+> pfoamed <- pfoa[pfoa$'PWS Name' %in% medium, ]
+> pfoafar <- pfoa[pfoa$'PWS Name' %in% far, ]
+> pfosclose <- pfos[pfos$'PWS Name' %in% close, ]
+> pfosmed <- pfos[pfos$'PWS Name' %in% medium, ]
+> pfosfar <- pfos[pfos$'PWS Name' %in% far, ]
+
+I separated the initial subsets as I do want to keep track of the amount of data with MRL. If one subset has siginificantly more than another, it could still
+have a higher mean and median as the points could be skewed. 
 

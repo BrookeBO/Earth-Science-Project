@@ -208,15 +208,15 @@ ANOVA
              Df   Sum Sq   Mean Sq F value Pr(>F)
 distance      2 0.000013 6.517e-06   0.227  0.797
 Residuals   295 0.008460 2.868e-05               
-1289 observations deleted due to missingness
+
 
 > pfosn$distance <- "Far" 
-> pfosn$distance[pfoan$'PWS Name' %in% medium] <- "Medium"
-> pfosn$distance[pfoan$'PWS Name' %in% close] <- "Close"
+> pfosn$distance[pfosn$'PWS Name' %in% medium] <- "Medium"
+> pfosn$distance[pfosn$'PWS Name' %in% close] <- "Close"
 > summary(aov(Result ~ distance, data = pfosn))
              Df   Sum Sq   Mean Sq F value Pr(>F)
-distance      2 6.70e-06 3.357e-06   0.881  0.415
-Residuals   294 1.12e-03 3.810e-06 
+distance      2 0.000048 2.394e-05   0.651  0.523
+Residuals   155 0.005699 3.676e-05
 
 
 Histogram 

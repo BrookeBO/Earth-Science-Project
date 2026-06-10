@@ -9,3 +9,4 @@ https://www.epa.gov/dwucmr/fifth-unregulated-contaminant-monitoring-rule-data-fi
 This finder allows me to categorize the data easily and make charts in exactly what I want to look at. Althought R would normally be used for sorting things like this,
 because the government website allows me to set the filters myself this saves me time making subsets of the data in the parameters I need which is very convenient! 
 In a normal project without this shortcut I would do ex_dat$... but this shortens the filtering code significantly. 
+

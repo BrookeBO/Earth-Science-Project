@@ -260,3 +260,106 @@ Bar Plots
 > barplot(tapply(pfosn$Result, pfosn$distance, mean, na.rm=TRUE))
 
 
+Variance 
+
+
+> var(pfoan$Result, na.rm=TRUE)
+[1] 3.806755e-06
+> var(pfosn$Result, na.rm=TRUE)
+[1] 3.660129e-05
+
+
+Standard Deviation
+
+> sd(pfoan$Result, na.rm=TRUE)
+[1] 0.001951091
+> sd(pfosn$Result, na.rm=TRUE)
+[1] 0.0060499
+
+
+T test 
+
+
+> pfosn$distance <- "Far" 
+> pfosn$distance[pfosn$'PWS Name' %in% medium] <- "Medium"
+> pfosn$distance[pfosn$'PWS Name' %in% close] <- "Close"
+> 
+> t.test(Result ~ distance, data = subset(pfosn, distance %in% c("Close","Far")))
+
+	Welch Two Sample t-test
+
+data:  Result by distance
+t = -4.8685, df = 149, p-value = 2.838e-06
+alternative hypothesis: true difference in means between group Close and group Far is not equal to 0
+95 percent confidence interval:
+ -0.003445343 -0.001455990
+sample estimates:
+mean in group Close   mean in group Far 
+        0.004600000         0.007050667 
+
+> t.test(Result ~ distance, data = subset(pfoan, distance %in% c("Close","Far")))
+
+	Welch Two Sample t-test
+
+data:  Result by distance
+t = -2.2305, df = 8.3073, p-value = 0.05505
+alternative hypothesis: true difference in means between group Close and group Far is not equal to 0
+95 percent confidence interval:
+ -1.875200e-03  2.519984e-05
+sample estimates:
+mean in group Close   mean in group Far 
+           0.005250            0.006175 
+
+
+Regression
+
+
+> pfoan$distance <- "Far" 
+> pfoan$distance[pfoan$'PWS Name' %in% medium] <- "Medium"
+> pfoan$distance[pfoan$'PWS Name' %in% close] <- "Close"
+> summary(lm(Result ~ distance, data = pfoan))
+
+Call:
+lm(formula = Result ~ distance, data = pfoan)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.002175 -0.001375 -0.000575  0.000825  0.009625 
+
+Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)    0.0052500  0.0006901   7.608  3.8e-13 ***
+distanceFar    0.0009250  0.0006999   1.322    0.187    
+distanceMedium 0.0008167  0.0009484   0.861    0.390    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.001952 on 294 degrees of freedom
+Multiple R-squared:  0.005959,	Adjusted R-squared:  -0.0008033 
+F-statistic: 0.8812 on 2 and 294 DF,  p-value: 0.4154
+
+
+> pfosn$distance <- "Far" 
+> pfosn$distance[pfosn$'PWS Name' %in% medium] <- "Medium"
+> pfosn$distance[pfosn$'PWS Name' %in% close] <- "Close"
+> 
+> summary(lm(Result ~ distance, data = pfosn))
+
+Call:
+lm(formula = Result ~ distance, data = pfosn)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.003117 -0.002451 -0.001551 -0.000051  0.043549 
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)
+(Intercept)    0.004600   0.004287   1.073    0.285
+distanceFar    0.002451   0.004316   0.568    0.571
+distanceMedium 0.004917   0.004951   0.993    0.322
+
+Residual standard error: 0.006063 on 155 degrees of freedom
+  (1429 observations deleted due to missingness)
+Multiple R-squared:  0.008332,	Adjusted R-squared:  -0.004464 
+F-statistic: 0.6512 on 2 and 155 DF,  p-value: 0.5229
+

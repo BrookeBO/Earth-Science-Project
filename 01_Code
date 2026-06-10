@@ -235,8 +235,14 @@ there was little detail in the histograms, box plots, etc.
 
 Boxplot 
 
+> pfosn$distance <- "Far" 
+> pfosn$distance[pfosn$'PWS Name' %in% medium] <- "Medium"
+> pfosn$distance[pfosn$'PWS Name' %in% close] <- "Close"
+> boxplot(pfosn$Result[pfoan$Result < 0.02])
 
-> boxplot(pfoan$Result[pfoan$Result < 0.02])
+> pfoan$distance <- "Far" 
+> pfoan$distance[pfoan$'PWS Name' %in% medium] <- "Medium"
+> pfoan$distance[pfoan$'PWS Name' %in% close] <- "Close"
 > boxplot(pfosn$Result[pfosn$Result < 0.02])
 
 

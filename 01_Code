@@ -47,3 +47,65 @@ The parts in each bracket were sorted by copilot.
 I separated the initial subsets as I do want to keep track of the amount of data with MRL. If one subset has siginificantly more than another, it could still
 have a higher mean and median as the points could be skewed. 
 
+Result code:
+This is the code which visualized the data giving information after sorting it out with the process 
+as seen before
+
+
+ANOVA
+
+
+> pfoan$distance <- "Far" 
+> pfoan$distance[pfoan$'PWS Name' %in% medium] <- "Medium"
+> pfoan$distance[pfoan$'PWS Name' %in% close] <- "Close"
+> summary(aov(Result ~ distance, data = pfoan))
+             Df   Sum Sq   Mean Sq F value Pr(>F)
+distance      2 0.000013 6.517e-06   0.227  0.797
+Residuals   295 0.008460 2.868e-05               
+1289 observations deleted due to missingness
+
+> pfosn$distance <- "Far" 
+> pfosn$distance[pfoan$'PWS Name' %in% medium] <- "Medium"
+> pfosn$distance[pfoan$'PWS Name' %in% close] <- "Close"
+> summary(aov(Result ~ distance, data = pfosn))
+             Df   Sum Sq   Mean Sq F value Pr(>F)
+distance      2 6.70e-06 3.357e-06   0.881  0.415
+Residuals   294 1.12e-03 3.810e-06 
+
+
+Histogram 
+
+
+There was an outlier close to 0.06 skewing all of the data so I removed that for the plots as
+there was little detail in the histograms, box plots, etc. 
+> pfosn <- subset(pfos, 'Result (µg/L)' != "< MRL")
+> pfosn$Result <- as.numeric(pfosn$`Result (µg/L)`)
+> hist(pfosn$Result[pfosn$Result < 0.02])
+
+> pfoan <- subset(pfos, 'Result (µg/L)' != "< MRL")
+> pfoan$Result <- as.numeric(pfoan$`Result (µg/L)`)
+> hist(pfoan$Result[pfoan$Result < 0.02])
+
+
+Boxplot 
+
+
+
+> boxplot(pfoan$Result[pfoan$Result < 0.02])
+> boxplot(pfosn$Result[pfosn$Result < 0.02])
+
+
+Dot Charts
+
+
+> dotchart(pfoan$Result)
+> dotchart(pfosn$Result)
+
+
+Bar Plots
+
+
+> barplot(tapply(pfoan$Result, pfoan$distance, mean))
+> barplot(tapply(pfosn$Result, pfosn$distance, mean, na.rm=TRUE))
+
+

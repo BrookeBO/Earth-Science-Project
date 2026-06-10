@@ -6,7 +6,7 @@
 
 This part was just getting the data into R. I created a dataset on the epa.gov website linked in my raw data folder. 
 I conveniently could already sort the data on the website to have information exclusively in MA. I also set it so that the dataset only contains information
-on PFOS and PFOA. I still had to make subsets of the two within that so the process of making subsets of the two would've been the same regardless but doing
+on PFOS and PFOAs. I still had to make subsets of the two within that so the process of making subsets of the two would've been the same regardless but doing
 it this way made the excel file much cleaner. 
 
 > head(pfoa)
@@ -32,10 +32,158 @@ a way that seems appropriate after analyzing the rest of the data.
 This removed all MRL points. I named them the same with n to represent the subsets with reported numbers only.
 Unfortunately, in this dataset there is no observance of it's distance to water. This means I have to manually map each from the ocean, set my boundaries for 
 each and then create subsets of each county to calculate the averages of each. I put my file into co-pilot and asked it to sort the distances for me as this
-would take a very long time to do manually and I cannot use regular data analysis software to do it. I am not copying the full code as that would take up a lot
-of space, but this is a sample: 
-> close <-c("HINGHAM WATER DEPARTMENT", "HULL WATER DEPARTMENT", "MARBLEHEAD WATER DEPARTMENT", "MARSHFIELD WATER DEPARTMENT",...) 
-The parts in each bracket were sorted by copilot. 
+would take a very long time to do manually and I cannot use regular data analysis software to do it. I then wrote in the locations to R, grouping by close,
+med, and far. Close was 0-10 miles, med was 10-20, and far was 20 miles or more.
+
+> close <-c("HINGHAM WATER DEPARTMENT",
++           "HULL WATER DEPARTMENT",
++           "MARBLEHEAD WATER DEPARTMENT",
++           "MARSHFIELD WATER DEPARTMENT",
++           "NAHANT WATER DEPARTMENT",
++           "NANTUCKET WATER DEPARTMENT",
++           "NEWBURYPORT WATER DEPARTMENT",
++           "PLYMOUTH WATER DEPARTMENT",
++           "PROVINCETOWN WATER DEPARTMENT",
++           "ROCKPORT WATER DEPARTMENT",
++           "SALEM WATER DEPARTMENT",
++           "SANDWICH WATER DEPARTMENT",
++           "SCITUATE WATER DEPARTMENT",
++           "SWAMPSCOTT WATER DEPARTMENT",
++           "WINTHROP WATER DEPARTMENT",
++           "YARMOUTH WATER DEPARTMENT")
+> 
+> medium <- c("BRAINTREE WATER DEPARTMENT",
++             "BROOKLINE WATER DEPARTMENT",
++             "CAMBRIDGE WATER DEPARTMENT",
++             "CANTON WATER DEPARTMENT",
++             "COHASSET WATER DEPARTMENT",
++             "DEDHAM WATER DEPARTMENT",
++             "EVERETT WATER DEPARTMENT",
++             "LEXINGTON WATER DIVISION",
++             "LYNNFIELD WATER DEPARTMENT",
++             "MALDEN WATER DEPARTMENT",
++             "MEDFORD WATER DIVISION",
++             "MELROSE WATER DEPARTMENT",
++             "MILTON WATER DEPARTMENT",
++             "NEEDHAM WATER DIVISION",
++             "NEWTON WATER DEPARTMENT",
++             "QUINCY WATER DEPARTMENT",
++             "RANDOLPH WATER DEPARTMENT",
++             "READING WATER DEPARTMENT",
++             "REVERE WATER DEPARTMENT",
++             "SOMERVILLE WATER DEPARTMENT",
++             "STONEHAM WATER DEPARTMENT",
++             "WAKEFIELD WATER DEPARTMENT",
++             "WALTHAM WATER DEPARTMENT",
++             "WATERTOWN WATER DEPARTMENT",
++             "WELLESLEY WATER DIVISION",
++             "WESTON WATER DEPARTMENT",
++             "WEYMOUTH WATER DIVISION",
++             "WILMINGTON WATER DEPARTMENT",
++             "WINCHESTER WATER DEPARTMENT",
++             "WOBURN WATER DEPARTMENT")
+> 
+> far <- c("ACTON WATER SUPPLY DISTRICT",
++          "ADAMS FIRE DISTRICT",
++          "AGAWAM WATER DEPARTMENT",
++          "AMHERST DPW WATER DIVISION",
++          "ASHBURNHAM WATER DEPARTMENT",
++          "ATHOL DPW WATER DIVISION",
++          "BELCHERTOWN WATER DISTRICT",
++          "CHICOPEE WATER DEPT (MWRA)",
++          "DALTON FIRE DISTRICT",
++          "SOUTH DEERFIELD WATER SUPPLY DISTRICT",
++          "EAST LONGMEADOW DPW WATER DEPT",
++          "EASTHAMPTON WATER DEPT",
++          "GREAT BARRINGTON FIRE DIST",
++          "GREENFIELD WATER DEPARTMENT",
++          "HADLEY DPW WATER DIVISION",
++          "HATFIELD WATER DEPT",
++          "HOLYOKE WATER WORKS",
++          "LEE WATER DEPT",
++          "LENOX DPW WATER DIVISION",
++          "LONGMEADOW WATER DEPT",
++          "MONSON WATER AND SEWER DEPT",
++          "TURNERS FALLS WATER DEPT",
++          "NORTH ADAMS WATER DEPT",
++          "NORTHAMPTON WATER DEPT",
++          "ORANGE WATER DEPT",
++          "PALMER WATER DISTRICT NO.1",
++          "PITTSFIELD DPU WATER DEPT",
++          "SOUTH HADLEY FD #1 (MWRA)",
++          "SOUTH HADLEY FIRE DISTRICT #2 WATER DEPT",
++          "SOUTHAMPTON WATER DEPT",
++          "SOUTHWICK WATER DEPT",
++          "SPRINGFIELD WATER AND SEWER COMMISSION",
++          "WARE WATER DEPT",
++          "WEST SPRINGFIELD DPW WATER DIVISION",
++          "WESTFIELD WATER DEPT",
++          "WHATELY WATER DEPARTMENT",
++          "WILBRAHAM WATER DEPT (MWRA)",
++          "WILLIAMSTOWN WATER DEPT",
++          "MT GREYLOCK REGIONAL SCHOOL",
++          "ASH/WIN JOINT WATER AUTHORITY",
++          "AUBURN WATER DISTRICT, MA",
++          "AYER DPW WATER DIVISION",
++          "DEVENS MASSDEVELOPMENT",
++          "BARRE WATER DEPARTMENT",
++          "BELLINGHAM DPW WATER SEWER DIV.",
++          "BLACKSTONE WATER DEPARTMENT",
++          "BOYLSTON WATER DISTRICT",
++          "CLINTON WATER DEPT",
++          "DOUGLAS WATER DEPARTMENT",
++          "DUDLEY WATER DEPARTMENT",
++          "SOUTHBRIDGE TOOL AND MANUFACTURING",
++          "FITCHBURG DPW, DIV. OF WATER SUPPLY",
++          "FRANKLIN WATER DEPARTMENT, MA",
++          "GARDNER WATER DEPARTMENT",
++          "GRAFTON WATER DISTRICT",
++          "GROTON WATER DEPARTMENT",
++          "HOLDEN WATER DIVISION, DPW",
++          "HOLLISTON WATER DEPARTMENT",
++          "HOPEDALE WATER DEPARTMENT",
++          "HOPKINTON WATER DEPARTMENT",
++          "HUDSON WATER SUPPLY",
++          "LANCASTER WATER DEPARTMENT",
++          "CHERRY VALLEY/ ROCHDALE WATER DISTRICT",
++          "LEOMINSTER WATER DIVISION",
++          "LITTLETON WATER DEPARTMENT",
++          "LUNENBURG WATER DISTRICT",
++          "MARLBOROUGH DPW WATER DIV. (MWRA)",
++          "MAYNARD DPW, WATER DIVISION",
++          "MEDFIELD WATER DEPT.",
++          "MEDWAY WATER DEPARTMENT",
++          "MILFORD WATER COMPANY",
++          "AQUARION WATER COMPANY, MILLBURY",
++          "MILLIS WATER DEPT",
++          "NORFOLK WATER DIVISION",
++          "MCI NORFOLK/CEDAR JUNCTION/WALPOLE",
++          "NORTH BROOKFIELD WATER DEPARTMENT",
++          "NORTHBOROUGH WATER DEPARTMENT (MWRA)",
++          "WHITINSVILLE WATER COMPANY",
++          "NORTHBRIDGE WATER DIVISION",
++          "AQUARION WATER COMPANY OXFORD",
++          "PAXTON WATER DEPARTMENT",
++          "PEPPERELL DPW WATER DIVISION",
++          "RUTLAND WATER DEPARTMENT",
++          "SHIRLEY WATER DISTRICT",
++          "MCI SHIRLEY",
++          "SHREWSBURY WATER DEPARTMENT",
++          "SOUTHBOROUGH DPW WATER DIVISION (MWRA)",
++          "SOUTHBRIDGE WATER DEPARTMENT",
++          "SPENCER WATER DEPARTMENT",
++          "STERLING WATER DEPARTMENT",
++          "STURBRIDGE WATER DEPARTMENT",
++          "TEMPLETON MUNIC. LIGHT AND WATER PLANT",
++          "TOWNSEND WATER DEPARTMENT",
++          "UPTON DPW WATER/WASTEWATER DIVISION",
++          "UXBRIDGE DPW, WATER DIVISION",
++          "WEBSTER WATER DEPARTMENT",
++          "WEST BOYLSTON WATER DISTRICT",
++          "WESTBOROUGH WATER DEPARTMENT")
+
+
+I then made sets of each with their corresponding chemicals separate PFOS and PFOAs
 
 > pfoaclose <- pfoa[pfoa$'PWS Name' %in% close, ]
 > pfoamed <- pfoa[pfoa$'PWS Name' %in% medium, ]
@@ -44,8 +192,6 @@ The parts in each bracket were sorted by copilot.
 > pfosmed <- pfos[pfos$'PWS Name' %in% medium, ]
 > pfosfar <- pfos[pfos$'PWS Name' %in% far, ]
 
-I separated the initial subsets as I do want to keep track of the amount of data with MRL. If one subset has siginificantly more than another, it could still
-have a higher mean and median as the points could be skewed. 
 
 Result code:
 This is the code which visualized the data giving information after sorting it out with the process 
@@ -88,7 +234,6 @@ there was little detail in the histograms, box plots, etc.
 
 
 Boxplot 
-
 
 
 > boxplot(pfoan$Result[pfoan$Result < 0.02])
